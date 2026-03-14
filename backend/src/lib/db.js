@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import { ENV } from "./env.js";
 
 async function connectDataBase() {
   try {
-    const connectionInstance = await mongoose.connect(process.env.MONGO_DB_URI);
+    const connectionInstance = await mongoose.connect(ENV.MONGO_DB_URI);
 
     console.log(
       "Database connect successfully",

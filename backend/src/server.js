@@ -1,14 +1,18 @@
 import express from "express";
-import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import connectDataBase from "./lib/db.js";
-
-dotenv.config();
+import authRouter from "./routes/auth.route.js";
+import { ENV } from "./lib/env.js";
 
 const app = express();
 
-app.get("/", (req, res) => res.send("MERN Chat Application"));
+app.use(express.json());
+app.use(cookieParser());
 
-const PORT = process.env.PORT || 3002;
+app.get("/", (_, res) => res.send("MERN Chat Application"));
+app.use("/api/auth", authRouter);
+
+const PORT = ENV.PORT || 3002;
 
 connectDataBase()
   .then(() =>
