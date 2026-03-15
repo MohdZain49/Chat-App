@@ -1,10 +1,11 @@
+import { ENV } from "../lib/env.js";
 import bcrypt from "bcryptjs";
 
 import generateToken from "../lib/utils.js";
 import User from "../models/user.model.js";
 
 import { sendWelcomeEmail } from "../email/emailHandlers.js";
-import { ENV } from "../lib/env.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
   try {
@@ -115,6 +116,34 @@ export const logout = async (_, res) => {
     });
   } catch (error) {
     console.error("Error in logout controller:", error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { profilePic } = req.body;
+    const userId = req.user._id;
+
+    if (!profilePic) {
+      return res.status(400).json({ message: "Profile picture required" });
+    }
+
+    const uploadResult = await cloudinary.uploader.upload(profilePic, {
+      folder: "chat-app/profile-pictures",
+    });
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePic: uploadResult.secure_url },
+      { new: true },
+    ).select("-password");
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error in updateProfile controller:", error);
     res.status(500).json({
       message: "Internal server error",
     });
