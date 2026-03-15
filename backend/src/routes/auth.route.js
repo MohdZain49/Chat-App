@@ -18,4 +18,8 @@ authRouter.post("/logout", logout);
 
 authRouter.post("/update-profile", protectRoute, updateProfile);
 
+authRouter.get("/check", protectRoute, (req, res) =>
+  res.status(200).json(req.user),
+);
+
 export default authRouter;
