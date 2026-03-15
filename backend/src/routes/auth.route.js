@@ -1,8 +1,11 @@
 import express from "express";
-import { signup } from "../controllers/user.controller.js";
+import { signup, login } from "../controllers/user.controller.js";
 
 const authRouter = express.Router();
 
 authRouter.post("/signup", signup);
+
+authRouter.post("/login", login);
+
 
 export default authRouter;
