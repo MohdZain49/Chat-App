@@ -100,3 +100,23 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const logout = async (_, res) => {
+  try {
+    res.cookie("jwt", "", {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: ENV.NODE_ENV === "development" ? false : true,
+    });
+
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error("Error in logout controller:", error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
