@@ -19,6 +19,9 @@ const _env = {
   CLOUDINARY_FOLDER_NAME: process.env.CLIENT_URL,
   CLOUDINARY_API_KEY: process.env.CLIENT_URL,
   CLOUDINARY_API_SECRET: process.env.CLIENT_URL,
+
+  ARCJET_ENV: process.env.ARCJET_ENV,
+  ARCJET_KEY: process.env.ARCJET_KEY,
 };
 
 export const ENV = Object.freeze(_env);

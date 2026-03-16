@@ -1,4 +1,5 @@
 import express from "express";
+import arcjetProtection from "../middlewares/arcjet.middleware.js";
 import protectRoute from "../middlewares/auth.middleware.js";
 
 import {
@@ -9,6 +10,8 @@ import {
 } from "../controllers/user.controller.js";
 
 const authRouter = express.Router();
+
+authRouter.use(arcjetProtection);
 
 authRouter.post("/signup", signup);
 
