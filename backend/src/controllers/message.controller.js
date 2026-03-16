@@ -11,7 +11,7 @@ export const getAllContacts = async (req, res) => {
       _id: { $ne: loggedInUser },
     }).select("-password");
 
-    if (!filteredUsers) {
+    if (filteredUsers.length === 0) {
       return res.status(404).json({
         message: "Contacts not found",
       });
@@ -37,7 +37,7 @@ export const getMessagesByUserId = async (req, res) => {
       ],
     });
 
-    if (!messages) {
+    if (messages.length === 0) {
       return res.status(404).json({
         message: "messages not found",
       });
@@ -58,15 +58,17 @@ export const sendMessage = async (req, res) => {
     const receiverId = req.params.id;
 
     const { text, image } = req.body;
-    if (!text && !image) {
+    if (!text?.trim() && !image) {
       return res.status(400).json({
-        message: "content of message required",
+        message: "Message content required",
       });
     }
 
     let imageUrl;
     if (image) {
-      const uploadResponse = await cloudinary.uploader.upload(image);
+      const uploadResponse = await cloudinary.uploader.upload(image, {
+        folder: "chat-app/messages-images",
+      });
       imageUrl = uploadResponse.secure_url;
     }
 
