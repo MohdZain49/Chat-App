@@ -5,6 +5,7 @@ import SignUpPage from "./pages/SignUpPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import useAuthStore from "./store/useAuthStore.js";
 import PageLoader from "./components/PageLoader.jsx";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const { authUser, isCheckingAuth, checkAuth } = useAuthStore();
@@ -40,6 +41,8 @@ function App() {
           element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
         />
       </Routes>
+
+      <Toaster />
     </div>
   );
 }
