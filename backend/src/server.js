@@ -1,14 +1,25 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import connectDataBase from "./lib/db.js";
+import cors from "cors";
+
 import { ENV } from "./lib/env.js";
+
+import connectDataBase from "./lib/db.js";
+
+import arcjetProtection from "./middlewares/arcjet.middleware.js";
+
 import authRouter from "./routes/auth.route.js";
 import messageRouter from "./routes/message.route.js";
-import arcjetProtection from "./middlewares/arcjet.middleware.js";
 
 const app = express();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: ENV.CLIENT_URL,
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 
 app.use(arcjetProtection);
