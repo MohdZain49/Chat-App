@@ -5,20 +5,20 @@ import toast from "react-hot-toast";
 const useAuthStore = create((set) => ({
   authUser: null,
   isCheckingAuth: true,
-  isSigninUp: false,
+  isSigningUp: false,
   isLoggingIn: false,
 
   signUp: async (userData) => {
-    set({ isSigninUp: true });
+    set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", userData);
       set({ authUser: res.data });
       toast.success("Account created successfully!");
     } catch (error) {
       console.error("Error in signup auth:\n", error);
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Something went wrong");
     } finally {
-      set({ isSigninUp: false });
+      set({ isSigningUp: false });
     }
   },
 
@@ -30,7 +30,7 @@ const useAuthStore = create((set) => ({
       toast.success("Logged in successfully");
     } catch (error) {
       console.error("Error in login auth:\n", error);
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Something went wrong");
     } finally {
       set({ isLoggingIn: false });
     }
@@ -39,7 +39,8 @@ const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
-      toast.success("Loggout in successfully");
+      set({ authUser: null });
+      toast.success("Logged out successfully");
     } catch (error) {
       console.error("Error in login auth:\n", error);
       toast.error("Error logging out");
@@ -50,8 +51,8 @@ const useAuthStore = create((set) => ({
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
-    } catch (error) {
-      console.error("Error in check auth:\n", error);
+    } catch {
+      set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
     }
