@@ -132,7 +132,7 @@ export const updateProfile = async (req, res) => {
     }
 
     const uploadResult = await cloudinary.uploader.upload(profilePic, {
-      folder: ENV.CLOUDINARY_FOLDER_NAME,
+      folder: `${ENV.CLOUDINARY_FOLDER_NAME}/profile-images`,
     });
 
     const updatedUser = await User.findByIdAndUpdate(
