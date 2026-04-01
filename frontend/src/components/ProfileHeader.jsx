@@ -37,7 +37,7 @@ function ProfileHeader() {
         {/* LEFT SIDE */}
         <div className="flex items-center gap-3">
           {/* AVATAR */}
-          <div className="avatar online">
+          <div className="avatar avatar-online">
             <button
               className="size-14 rounded-full overflow-hidden relative group"
               onClick={() => fileInputRef.current.click()}
@@ -77,7 +77,7 @@ function ProfileHeader() {
           </div>
         </div>
 
-        {/* LEFT SIDE - BUTTON */}
+        {/* RIGHT SIDE - BUTTON */}
         <div className="flex gap-4 items-center">
           <button
             className="text-slate-400 hover:text-slate-200 transition-colors"
