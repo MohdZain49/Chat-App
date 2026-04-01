@@ -109,11 +109,6 @@ export const getChatPartners = async (req, res) => {
       $or: [{ senderId: loggedInUserId }, { receiverId: loggedInUserId }],
     });
 
-    if (messages.length === 0) {
-      return res.status(404).json({
-        message: "No chats available",
-      });
-    }
 
     const chatPartnersId = messages.map((msg) =>
       msg.senderId.toString() === loggedInUserId.toString()
