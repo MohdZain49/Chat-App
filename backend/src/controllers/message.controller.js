@@ -32,16 +32,10 @@ export const getMessagesByUserId = async (req, res) => {
     const { id } = req.params;
     const messages = await Message.find({
       $or: [
-        { senderId: myId, receiverId: id },
+        { senderId: myId, receiverId: id },   
         { senderId: id, receiverId: myId },
       ],
     });
-
-    if (messages.length === 0) {
-      return res.status(404).json({
-        message: "messages not found",
-      });
-    }
 
     return res.status(200).json(messages);
   } catch (error) {
@@ -108,7 +102,6 @@ export const getChatPartners = async (req, res) => {
     const messages = await Message.find({
       $or: [{ senderId: loggedInUserId }, { receiverId: loggedInUserId }],
     });
-
 
     const chatPartnersId = messages.map((msg) =>
       msg.senderId.toString() === loggedInUserId.toString()
