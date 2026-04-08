@@ -4,6 +4,7 @@ import cors from "cors";
 
 import { ENV } from "./lib/env.js";
 
+import { app, server } from "./lib/socket.js";
 import connectDataBase from "./lib/db.js";
 
 import arcjetProtection from "./middlewares/arcjet.middleware.js";
@@ -11,9 +12,7 @@ import arcjetProtection from "./middlewares/arcjet.middleware.js";
 import authRouter from "./routes/auth.route.js";
 import messageRouter from "./routes/message.route.js";
 
-const app = express();
-
-app.use(express.json({ limit: "10mb" })); 
+app.use(express.json({ limit: "10mb" }));
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -36,6 +35,6 @@ const PORT = ENV.PORT || 3002;
 
 connectDataBase()
   .then(() =>
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`)),
+    server.listen(PORT, () => console.log(`Server running on port ${PORT}`)),
   )
   .catch((err) => console.error("Failed to run server", err));
