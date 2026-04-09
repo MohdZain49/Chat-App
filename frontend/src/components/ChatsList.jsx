@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import useChatStore from "../store/useChatStore";
 import UserLoadingSkeleton from "../components/UsersLoadingSkeleton";
 import NoChatsFound from "../components/NoChatsFound";
+import useAuthStore from "../store/useAuthStore";
 
 function ChatsList() {
+  const { onlineUsers } = useAuthStore();
   const { getChatPartners, chats, isUsersLoading, setSelectedUser } =
     useChatStore();
 
@@ -23,7 +25,7 @@ function ChatsList() {
         >
           <div className="flex items-center gap-3">
             <div
-              className={`avatar avatar-online`}
+              className={`avatar ${onlineUsers.includes(chat._id) ? "avatar-online" : "avatar-offline"} `}
             >
               <div className="size-12 rounded-full">
                 <img
