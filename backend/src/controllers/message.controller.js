@@ -3,6 +3,7 @@ import Message from "../models/message.model.js";
 
 import cloudinary from "../lib/cloudinary.js";
 import { ENV } from "../lib/env.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export const getAllContacts = async (req, res) => {
   try {
@@ -33,7 +34,7 @@ export const getMessagesByUserId = async (req, res) => {
     const { id } = req.params;
     const messages = await Message.find({
       $or: [
-        { senderId: myId, receiverId: id },   
+        { senderId: myId, receiverId: id },
         { senderId: id, receiverId: myId },
       ],
     });
@@ -85,7 +86,10 @@ export const sendMessage = async (req, res) => {
       image: imageUrl,
     });
 
-    // todo: send message in real-time if user is online - socket.io
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverExists) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     return res.status(201).json(newMessage);
   } catch (error) {
